@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <title>Test Cookie</title>
+    </head>
+    <body>
+        <div>
+            set cookie to bar.com: <span id="expected"></span>
+            <br>
+            echo cookie from bar.com: <span id="actual"></span>
+        </div>
+        <script type="text/javascript">
+            setInterval(() => {
+                const testValue = Math.random();
+                expected.innerHTML = testValue;
+
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', 'https://bar.com:3000/set-cookie?key=bar&value=' + testValue);
+                xhr.withCredentials = true;
+                xhr.send();
+
+                xhr.addEventListener('load', evt => {
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('GET', 'https://bar.com:3000/echo-cookie?key=bar');
+                    xhr.withCredentials = true;
+                    xhr.addEventListener('load', evt => {
+                        actual.innerHTML = xhr.responseText;
+                    });
+                    xhr.send();
+                });
+            }, 1000);
+        </script>
+    </body>
+</html>
