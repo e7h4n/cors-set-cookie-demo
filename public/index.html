@@ -12,7 +12,7 @@
             echo cookie from bar.com: <span id="actual"></span>
         </div>
         <script type="text/javascript">
-            setInterval(() => {
+            function test() {
                 const testValue = Math.random();
                 expected.innerHTML = testValue;
 
@@ -23,14 +23,16 @@
 
                 xhr.addEventListener('load', evt => {
                     const xhr = new XMLHttpRequest();
-                    xhr.open('GET', 'https://bar.com:3000/echo-cookie?key=bar');
+                    xhr.open('POST', 'https://bar.com:3000/echo-cookie?key=bar');
                     xhr.withCredentials = true;
                     xhr.addEventListener('load', evt => {
                         actual.innerHTML = xhr.responseText;
                     });
                     xhr.send();
                 });
-            }, 1000);
+            };
+
+            test();
         </script>
     </body>
 </html>
